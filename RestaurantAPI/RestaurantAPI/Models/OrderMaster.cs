@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.Collections.Generic;
 
 namespace RestaurantAPI.Models
 {
@@ -16,5 +17,6 @@ namespace RestaurantAPI.Models
         [Column(TypeName = "nvarchar(10)")]
         public string PMethod { get; set; }
         public decimal GTotal { get; set; }
+        public List<OrderDetail> OrderDetails { get; set; }
     }
 }
