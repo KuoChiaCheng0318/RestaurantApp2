@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Form from "../../layouts/Form"
 import { Grid, InputAdornment, makeStyles, ButtonGroup, Button as MuiButton } from '@material-ui/core';
 import ReplayIcon from '@material-ui/icons/Replay';
@@ -7,6 +7,7 @@ import ReorderIcon from '@material-ui/icons/Reorder';
 import { Input, Select, Button } from "../../controls";
 import { NoEncryption } from '@material-ui/icons';
 import { useForm } from '../../hooks/useForm';
+import { ENDPIONTS, createAPIEndpoint } from '../../api';
 
 const pMethods = [
   { id: 'none', title: 'Select' },
@@ -40,6 +41,21 @@ export default function OrderForm(props) {
 
   const {values, errors, handleInputChange} = props;
   const classes = useStyles();
+  const [customerList, setCustomerList] = useState([]);
+
+  useEffect(() => {
+    // console.log(createAPIEndpoint(ENDPIONTS.CUSTOMER).fetchAll())
+    createAPIEndpoint(ENDPIONTS.CUSTOMER).fetchAll()
+        .then(res => {
+            let customerList = res.data.$values.map(item => ({
+                id: item.customerID,
+                title: item.customerName
+            }));
+            customerList = [{ id: 0, title: 'Select' }].concat(customerList);
+            setCustomerList(customerList);
+        })
+        .catch(err => console.log(err))
+  }, [])
 
   return (
       <Form>
@@ -57,17 +73,12 @@ export default function OrderForm(props) {
                 }}
               />
               <Select
-                label="Customer"
-                name="customerId"
-                value={values.customerId}
-                onChange= {handleInputChange}
-                options={[
-                  {id:0, title:'Select'},
-                  {id:1, title:'Customer 1'},
-                  {id:2, title:'Customer 2'},
-                  {id:3, title:'Customer 3'},
-                  {id:4, title:'Customer 4'}
-                ]}
+                  label="Customer"
+                  name="customerId"
+                  value={values.customerId}
+                  onChange={handleInputChange}
+                  options={customerList}
+                  error={errors.customerId}
               />
               </Grid>
               <Grid item xs={6}>
