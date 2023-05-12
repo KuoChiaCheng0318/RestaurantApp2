@@ -33,14 +33,45 @@ namespace RestaurantAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<OrderMaster>> GetOrderMaster(long id)
         {
-            var orderMaster = await _context.OrderMasters.FindAsync(id);
+            //get fooditem from order details
+            var orderDetails = await (from master in _context.Set<OrderMaster>()
+                                      join detail in _context.Set<OrderDetail>()
+                                      on master.OrderMasterId equals detail.OrderMasterId
+                                      join foodItem in _context.Set<FoodItem>()
+                                      on detail.FoodItemId equals foodItem.FoodItemId
+                                      where master.OrderMasterId == id
+
+                                      select new
+                                      {
+                                          master.OrderMasterId,
+                                          detail.OrderDetailId,
+                                          detail.FoodItemId,
+                                          detail.Quantity,
+                                          detail.FoodItemPrice,
+                                          foodItem.FoodItemName
+                                      }).ToListAsync();
+
+            // get order master
+            var orderMaster = await (from a in _context.Set<OrderMaster>()
+                                     where a.OrderMasterId == id
+
+                                     select new
+                                     {
+                                         a.OrderMasterId,
+                                         a.OrderNumber,
+                                         a.CustomerId,
+                                         a.PMethod,
+                                         a.GTotal,
+                                         deletedOrderItemIds = "",
+                                         orderDetails = orderDetails
+                                     }).FirstOrDefaultAsync();
 
             if (orderMaster == null)
             {
                 return NotFound();
             }
 
-            return orderMaster;
+            return Ok(orderMaster);
         }
 
         // PUT: api/Order/5
@@ -54,6 +85,22 @@ namespace RestaurantAPI.Controllers
             }
 
             _context.Entry(orderMaster).State = EntityState.Modified;
+
+            //existing food items & newly added food items
+            foreach (OrderDetail item in orderMaster.OrderDetails)
+            {
+                if (item.OrderDetailId == 0)
+                    _context.OrderDetails.Add(item);
+                else
+                    _context.Entry(item).State = EntityState.Modified;
+            }
+
+            //deleted food items
+            foreach (var i in orderMaster.DeletedOrderItemIds.Split(',').Where(x => x != ""))
+            {
+                OrderDetail y = _context.OrderDetails.Find(Convert.ToInt64(i));
+                _context.OrderDetails.Remove(y);
+            }
 
             try
             {

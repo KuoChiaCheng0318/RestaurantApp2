@@ -81,6 +81,7 @@ export default function OrderForm(props) {
     else {
         createAPIEndpoint(ENDPIONTS.ORDER).fetchById(orderId)
             .then(res => {
+                // console.log(res.data)
                 setValues(res.data);
                 setErrors({});
             })
@@ -114,6 +115,7 @@ const submitOrder = e => {
                 .catch(err => console.log(err));
         }
         else {
+          console.log(values)
             createAPIEndpoint(ENDPIONTS.ORDER).update(values.orderMasterId, values)
                 .then(res => {
                     setOrderId(0);

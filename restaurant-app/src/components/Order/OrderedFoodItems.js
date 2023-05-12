@@ -45,10 +45,12 @@ export default function OrderedFoodItems(props) {
     const classes = useStyles();
 
     let orderedFoodItems = values.orderDetails;
+    console.log(values.orderDetails)
 
     const removeFoodItem = (index, id) => {
         // debugger;
         let x = { ...values };
+        // console.log(x.orderDetails)
         x.orderDetails = x.orderDetails.filter((_, i) => i != index);
         if (id != 0)
             x.deletedOrderItemIds += id + ',';

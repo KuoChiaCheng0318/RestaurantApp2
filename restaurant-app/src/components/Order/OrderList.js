@@ -12,12 +12,15 @@ export default function OrderList(props) {
     useEffect (() => {
         createAPIEndpoint(ENDPIONTS.ORDER).fetchAll()
             .then(res => {
+                // console.log(res.data.$values);
                 setOrderList(res.data.$values)
             })
             .catch(err => console.log(err))
     },[])
 
     const showForUpdate = id => {
+        // console.log(id);
+        // window.confirm('Are you sure to update this record?')
         setOrderId(id);
         setOrderListVisibility(false);
     }
