@@ -8,6 +8,7 @@ import { Input, Select, Button } from "../../controls";
 import { NoEncryption } from '@material-ui/icons';
 import { useForm } from '../../hooks/useForm';
 import { ENDPIONTS, createAPIEndpoint } from '../../api';
+import { roundTo2DecimalPoint } from "../../utils";
 
 const pMethods = [
   { id: 'none', title: 'Select' },
@@ -39,7 +40,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function OrderForm(props) {
 
-  const {values, errors, handleInputChange} = props;
+  const { values, setValues, errors, setErrors,
+    handleInputChange, resetFormControls } = props;
   const classes = useStyles();
   const [customerList, setCustomerList] = useState([]);
 
@@ -56,6 +58,17 @@ export default function OrderForm(props) {
         })
         .catch(err => console.log(err))
   }, [])
+
+  useEffect(() => {
+    let gTotal = values.orderDetails.reduce((tempTotal, item) => {
+        return tempTotal + (item.quantity * item.foodItemPrice);
+    }, 0);
+    setValues({
+        ...values,
+        gTotal: roundTo2DecimalPoint(gTotal)
+    })
+
+  }, [JSON.stringify(values.orderDetails)]);
 
   return (
       <Form>
