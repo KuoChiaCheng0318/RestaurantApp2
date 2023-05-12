@@ -44,6 +44,9 @@ export default function OrderForm(props) {
     handleInputChange, resetFormControls } = props;
   const classes = useStyles();
   const [customerList, setCustomerList] = useState([]);
+  const [orderListVisibility, setOrderListVisibility] = useState(false);
+  const [orderId, setOrderId] = useState(0);
+  const [notify, setNotify] = useState({ isOpen: false })
 
   useEffect(() => {
     // console.log(createAPIEndpoint(ENDPIONTS.CUSTOMER).fetchAll())
@@ -70,8 +73,62 @@ export default function OrderForm(props) {
 
   }, [JSON.stringify(values.orderDetails)]);
 
+  useEffect(() => {
+    if (orderId == 0) resetFormControls()
+    else {
+        createAPIEndpoint(ENDPIONTS.ORDER).fetchById(orderId)
+            .then(res => {
+                setValues(res.data);
+                setErrors({});
+            })
+            .catch(err => console.log(err))
+    }
+}, [orderId]);
+
+const validateForm = () => {
+    let temp = {};
+    temp.customerId = values.customerId != 0 ? "" : "This field is required.";
+    temp.pMethod = values.pMethod != "none" ? "" : "This field is required.";
+    temp.orderDetails = values.orderDetails.length != 0 ? "" : "This field is required.";
+    setErrors({ ...temp });
+    return Object.values(temp).every(x => x === "");
+}
+
+const resetForm = () => {
+    resetFormControls();
+    setOrderId(0);
+}
+
+const submitOrder = e => {
+    e.preventDefault();
+    if (validateForm()) {
+        if (values.orderMasterId == 0) {
+            createAPIEndpoint(ENDPIONTS.ORDER).create(values)
+                .then(res => {
+                    resetFormControls();
+                    setNotify({isOpen:true, message:'New order is created.'});
+                })
+                .catch(err => console.log(err));
+        }
+        else {
+            createAPIEndpoint(ENDPIONTS.ORDER).update(values.orderMasterId, values)
+                .then(res => {
+                    setOrderId(0);
+                    setNotify({isOpen:true, message:'The order is updated.'});
+                })
+                .catch(err => console.log(err));
+        }
+    }
+
+}
+
+const openListOfOrders = () => {
+    setOrderListVisibility(true);
+}
+
   return (
-      <Form>
+    <>
+      <Form onSubmit={submitOrder}>
           <Grid container>
               <Grid item xs={6}>
               <Input 
@@ -98,15 +155,17 @@ export default function OrderForm(props) {
               <Select
                 label="Payment Method"
                 name="pMethod"
-                options={pMethods}
                 value={values.pMethod}
                 onChange= {handleInputChange}
+                options={pMethods}
+                error={errors.pMethod}
               />
               <Input 
                 disabled
                 label="Grand Total"
                 name="gTotal"
-                value={values.gTotal}InputProps={{
+                value={values.gTotal}
+                InputProps={{
                   startAdornment: <InputAdornment
                       className={classes.adornmentText}
                       position="start">$</InputAdornment>
@@ -120,5 +179,6 @@ export default function OrderForm(props) {
               </Grid>
           </Grid>
       </Form>
+    </>
   )
 }
