@@ -9,6 +9,9 @@ import { NoEncryption } from '@material-ui/icons';
 import { useForm } from '../../hooks/useForm';
 import { ENDPIONTS, createAPIEndpoint } from '../../api';
 import { roundTo2DecimalPoint } from "../../utils";
+import Popup from '../../layouts/Popup';
+import OrderList from './OrderList';
+import Notification from "../../layouts/Notification";
 
 const pMethods = [
   { id: 'none', title: 'Select' },
@@ -175,10 +178,17 @@ const openListOfOrders = () => {
                 <MuiButton size="large" endIcon={<RestaurantMenuIcon />} type="submit">Submit</MuiButton>
                 <MuiButton size="small" startIcon={<ReplayIcon />} />
               </ButtonGroup>
-              <Button size="large" startIcon={<ReorderIcon />}>Orders</Button>
+              <Button size="large" onClick={openListOfOrders} startIcon={<ReorderIcon />}>Orders</Button>
               </Grid>
           </Grid>
       </Form>
+      <Popup
+        title="List of Orders"
+        openPopup={orderListVisibility}
+        setOpenPopup={setOrderListVisibility}>
+        <OrderList
+            {...{ setOrderId, setOrderListVisibility,resetFormControls,setNotify }} />
+      </Popup>
     </>
   )
 }
