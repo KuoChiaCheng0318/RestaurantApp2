@@ -77,7 +77,9 @@ export default function SearchFoodItems(props) {
         }
         setValues({
             ...values,
-            orderDetails: [...values.orderDetails, x]
+            // orderDetails: [...values.orderDetails, x]
+            orderDetails: Array.isArray(values.orderDetails) ? [...values.orderDetails, x] : [...values.orderDetails.$values, x]
+
         })
     }
 
