@@ -77,11 +77,11 @@ export default function OrderForm(props) {
         ...values,
         gTotal: roundTo2DecimalPoint(gTotal)
     })
-
+    // console.log(values)
   }, [JSON.stringify(values.orderDetails)]);
 
   useEffect(() => {
-    if (orderId == 0) resetFormControls()
+    if (orderId === 0) resetFormControls()
     else {
         createAPIEndpoint(ENDPIONTS.ORDER).fetchById(orderId)
             .then(res => {
@@ -95,9 +95,9 @@ export default function OrderForm(props) {
 
 const validateForm = () => {
     let temp = {};
-    temp.customerId = values.customerId != 0 ? "" : "This field is required.";
-    temp.pMethod = values.pMethod != "none" ? "" : "This field is required.";
-    temp.orderDetails = values.orderDetails.length != 0 ? "" : "This field is required.";
+    temp.customerId = values.customerId !== 0 ? "" : "This field is required.";
+    temp.pMethod = values.pMethod !== "none" ? "" : "This field is required.";
+    temp.orderDetails = values.orderDetails.length !== 0 ? "" : "This field is required.";
     setErrors({ ...temp });
     return Object.values(temp).every(x => x === "");
 }
@@ -110,7 +110,7 @@ const resetForm = () => {
 const submitOrder = e => {
     e.preventDefault();
     if (validateForm()) {
-        if (values.orderMasterId == 0) {
+        if (values.orderMasterId === 0) {
             createAPIEndpoint(ENDPIONTS.ORDER).create(values)
                 .then(res => {
                     resetFormControls();

@@ -12,7 +12,7 @@ export default function OrderList(props) {
     useEffect (() => {
         createAPIEndpoint(ENDPIONTS.ORDER).fetchAll()
             .then(res => {
-                // console.log(res.data.$values);
+                // console.log(res.data);
                 setOrderList(res.data.$values)
             })
             .catch(err => console.log(err))

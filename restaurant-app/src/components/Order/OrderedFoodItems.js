@@ -46,7 +46,8 @@ export default function OrderedFoodItems(props) {
 
     // let orderedFoodItems = values.orderDetails;
     let orderedFoodItems = Array.isArray(values.orderDetails)? values.orderDetails: values.orderDetails.$values;
-    console.log(orderedFoodItems)
+    // console.log(orderedFoodItems)
+    // console.log(values.orderDetails)
 
     const removeFoodItem = (index, id) => {
         // debugger;
