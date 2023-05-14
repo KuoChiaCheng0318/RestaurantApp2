@@ -52,7 +52,8 @@ export default function OrderedFoodItems(props) {
         // debugger;
         let x = { ...values };
         // console.log(x.orderDetails)
-        x.orderDetails = x.orderDetails.filter((_, i) => i != index);
+        // x.orderDetails = x.orderDetails.filter((_, i) => i != index);
+        x.orderDetails = Array.isArray(x.orderDetails)? x.orderDetails.filter((_, i) => i != index): x.orderDetails.$values.filter((_, i) => i != index);
         if (id != 0)
             x.deletedOrderItemIds += id + ',';
         setValues({ ...x });
@@ -60,7 +61,8 @@ export default function OrderedFoodItems(props) {
 
     const updateQuantity = (idx, value) => {
         let x = { ...values };
-        let foodItem = x.orderDetails[idx];
+        // let foodItem = x.orderDetails[idx];
+        let foodItem = Array.isArray(x.orderDetails)? x.orderDetails[idx]: x.orderDetails.$values[idx];
         if (foodItem.quantity + value > 0) {
             foodItem.quantity += value;
             setValues({ ...x });

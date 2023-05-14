@@ -67,11 +67,7 @@ export default function OrderForm(props) {
 
   useEffect(() => {
     // console.log(values.orderDetails)
-    let orderedFoodItems = Array.isArray(values.orderDetails)
-    ? values.orderDetails
-    : Array.isArray(values.orderDetails?.$values)
-      ? values.orderDetails.$values
-      : [];
+    let orderedFoodItems = Array.isArray(values.orderDetails)? values.orderDetails: values.orderDetails.$values;
 
     // let gTotal = values.orderDetails.reduce((tempTotal, item) => {
       let gTotal = orderedFoodItems.reduce((tempTotal, item) => {

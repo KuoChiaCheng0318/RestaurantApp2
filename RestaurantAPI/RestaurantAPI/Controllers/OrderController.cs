@@ -25,7 +25,7 @@ namespace RestaurantAPI.Controllers
         public async Task<ActionResult<IEnumerable<OrderMaster>>> GetOrderMasters()
         {
             return await _context.OrderMasters
-                .Include(x => x.Customer)
+                .Include( x =>x.Customer)
                 .ToListAsync();
         }
 
