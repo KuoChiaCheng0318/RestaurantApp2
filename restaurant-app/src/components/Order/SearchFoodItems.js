@@ -39,8 +39,7 @@ const useStyles = makeStyles(theme => ({
 export default function SearchFoodItems(props) {
 
     const { values, setValues } = props;
-    // let orderedFoodItems = values.orderDetails;
-    let orderedFoodItems = Array.isArray(values.orderDetails)? values.orderDetails:  values.orderDetails.$values;
+    let orderedFoodItems = values.orderDetails;
 
     const [foodItems, setFoodItems] = useState([]);
     const [searchList, setSearchList] = useState([]);
