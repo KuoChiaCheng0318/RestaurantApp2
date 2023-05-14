@@ -119,7 +119,7 @@ const submitOrder = e => {
                 .catch(err => console.log(err));
         }
         else {
-          console.log(values)
+          // console.log(values)
             createAPIEndpoint(ENDPIONTS.ORDER).update(values.orderMasterId, values)
                 .then(res => {
                     setOrderId(0);

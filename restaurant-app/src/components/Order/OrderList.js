@@ -8,11 +8,26 @@ export default function OrderList(props) {
 
     const { setOrderId, setOrderListVisibility, resetFormControls, setNotify } = props;
     const [orderList, setOrderList] = useState([]);
+    const [customerList, setCustomerList] = useState([]);
+
+    useEffect(() => {
+        // console.log(createAPIEndpoint(ENDPIONTS.CUSTOMER).fetchAll())
+        createAPIEndpoint(ENDPIONTS.CUSTOMER).fetchAll()
+            .then(res => {
+                let customerList = res.data.$values.map(item => ({
+                    id: item.customerID,
+                    title: item.customerName
+                }));
+                customerList = [{ id: 0, title: 'Select' }].concat(customerList);
+                setCustomerList(customerList);
+            })
+            .catch(err => console.log(err))
+      }, [])
 
     useEffect (() => {
         createAPIEndpoint(ENDPIONTS.ORDER).fetchAll()
             .then(res => {
-                // console.log(res.data);
+                console.log(res.data);
                 setOrderList(res.data.$values)
             })
             .catch(err => console.log(err))
@@ -38,6 +53,11 @@ export default function OrderList(props) {
         }
     }
 
+    const getCustomerName = customerId => {
+        const customer = customerList.find(cust => cust.id === customerId);
+        return customer ? customer.title : '';
+    };
+
   return (
     <Table>
         <TableHead>
@@ -59,7 +79,8 @@ export default function OrderList(props) {
                         </TableCell>
                         <TableCell
                             onClick={e => showForUpdate(item.orderMasterId)}>
-                            {item.customer.customerName}
+                            {/* {item.customer.customerName} */}
+                            {getCustomerName(item.customerId)}
                         </TableCell>
                         <TableCell
                             onClick={e => showForUpdate(item.orderMasterId)}>
