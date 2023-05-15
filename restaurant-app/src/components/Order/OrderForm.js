@@ -114,7 +114,9 @@ const submitOrder = e => {
             createAPIEndpoint(ENDPIONTS.ORDER).create(values)
                 .then(res => {
                     resetFormControls();
-                    setNotify({isOpen:true, message:'New order is created.'});
+                    // setNotify({isOpen:true, message:'New order is created.'});
+                    alert("New order is created.");
+
                 })
                 .catch(err => console.log(err));
         }
@@ -123,7 +125,8 @@ const submitOrder = e => {
             createAPIEndpoint(ENDPIONTS.ORDER).update(values.orderMasterId, values)
                 .then(res => {
                     setOrderId(0);
-                    setNotify({isOpen:true, message:'The order is updated.'});
+                    // setNotify({isOpen:true, message:'The order is updated.'});
+                    alert("The order is updated.");
                 })
                 .catch(err => console.log(err));
         }
