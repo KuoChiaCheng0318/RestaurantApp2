@@ -26,6 +26,7 @@ jobs:
         cd restaurant-app
         # npm ci
         npm install --force
+        npm audit fix --force
         npm run build
 
     - name: Publish ASP.NET Core app to Azure App Service
