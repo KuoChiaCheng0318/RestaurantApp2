@@ -26,6 +26,8 @@ jobs:
         cd restaurant-app
         npm install --force
         npm run build
+        npm install -g serve
+        serve -s build
 
     - name: Publish ASP.NET Core app to Azure App Service
       uses: azure/webapps-deploy@v2
