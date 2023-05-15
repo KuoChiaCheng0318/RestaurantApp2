@@ -25,10 +25,10 @@ jobs:
       run: |
         cd restaurant-app
         # npm ci
-        # npm install @material-ui/core --force
-        # npm install @material-ui/icons --force
-        # npm i axios --force
-        # npm install @material-ui/lab --force
+        npm install @material-ui/core --force
+        npm install @material-ui/icons --force
+        npm install axios --force
+        npm install @material-ui/lab --force
         npm run build
 
     - name: Publish ASP.NET Core app to Azure App Service
