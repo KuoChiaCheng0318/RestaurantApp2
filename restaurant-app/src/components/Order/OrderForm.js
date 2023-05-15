@@ -115,7 +115,7 @@ const submitOrder = e => {
                 .then(res => {
                     resetFormControls();
                     // setNotify({isOpen:true, message:'New order is created.'});
-                    alert("New order is created.");
+                    // alert("New order is created.");
 
                 })
                 .catch(err => console.log(err));
@@ -126,7 +126,7 @@ const submitOrder = e => {
                 .then(res => {
                     setOrderId(0);
                     // setNotify({isOpen:true, message:'The order is updated.'});
-                    alert("The order is updated.");
+                    // alert("The order is updated.");
                 })
                 .catch(err => console.log(err));
         }
