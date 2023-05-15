@@ -24,9 +24,7 @@ jobs:
     - name: Install dependencies and build React app
       run: |
         cd restaurant-app
-        # npm ci
         npm install --force
-        npm audit fix --force
         npm run build
 
     - name: Publish ASP.NET Core app to Azure App Service
@@ -36,13 +34,3 @@ jobs:
         slot-name: production
         publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A0947562CC5B49D584B4F5DB12191284 }}
         package: .
-
-
-      # - name: Deploy to Azure Web App
-      #   id: deploy-to-webapp
-      #   uses: azure/webapps-deploy@v2
-      #   with:
-      #     app-name: 'RestaurantApp20230514'
-      #     slot-name: 'Production'
-      #     publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_A0947562CC5B49D584B4F5DB12191284 }}
-      #     package: .
